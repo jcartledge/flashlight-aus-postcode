@@ -1,0 +1,9 @@
+{
+  "name": "aus-postcode",
+  "displayName": "Australian postcodes",
+  "description": "Look up Australian postcodes",
+  "examples": ["postcode footscray"],
+  "categories": ["Information", "Search"],
+  "creator_name": "James Cartledge",
+  "creator_url": "http://jcartledge.website/"
+}
