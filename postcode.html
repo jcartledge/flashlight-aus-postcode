@@ -1,0 +1,47 @@
+<style type="text/css">
+  * {
+    font-family: "Helvetica Neue";
+    font-size: 24px;
+  }
+  .highlight {
+    color: green;
+  }
+</style>
+<div id="results">
+  Loading...
+</div>
+<script>
+
+  var search = '<!--SUBURB-->';
+
+  function lookup(suburb, cb) {
+    if(!suburb.length) return cb([]);
+    var req = new XMLHttpRequest();
+    var url = "http://v0.postcodeapi.com.au/suburbs.json?name=" + encodeURIComponent(suburb);
+    req.open("GET", url, true);
+    req.addEventListener("load", function(e) {
+      var req = e.target;
+      if (req.readyState === 4) {
+        if (req.status === 200) {
+          cb(JSON.parse(req.responseText));
+        } else {
+          console.error(req.statusText);
+        }
+      }
+    }, false);
+    return req.send();
+  }
+
+  function highlight(str, search) {
+    if(!search) search = str;
+    return str.replace(new RegExp('(' + search + ')', 'gi'),
+      '<span class="highlight">$1</span>');
+  }
+
+  lookup(search, function(json) {
+    var html = json.length ? json.map(function(result) {
+      return result.postcode + ' ' + highlight(result.name, search) + '<br>';
+    }).join('') : 'No results for ' + highlight(search) + '.';
+    document.getElementById('results').innerHTML = html;
+  });
+</script>
